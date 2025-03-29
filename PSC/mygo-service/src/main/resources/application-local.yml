@@ -1,0 +1,12 @@
+mygo:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    host: localhost
+    port: 3306
+    database: mygo
+    username: mpw:5neyAWmmCSwI76gQ4Nogyw==
+    password: mpw:0Be5ttoTZGH2uiH8iC9aww==
+  data:
+    redis:
+      host: localhost
+      port: 6379
