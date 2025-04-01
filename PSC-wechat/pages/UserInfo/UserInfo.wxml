@@ -1,0 +1,33 @@
+<view class="container">
+  <navigation-bar title="我的信息" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+  
+  <scroll-view scroll-y class="scroll-container">
+    <view class="content-container">
+      <!-- 用户信息卡片 -->
+      <view class="info-card">
+        <view class="avatar-section">
+          <image class="avatar" src="{{userInfo.avatar || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+          <text class="name">{{userInfo.name || '未设置'}}</text>
+        </view>
+        
+        <view class="info-section">
+          <view class="info-item">
+            <text class="label">手机号码</text>
+            <text class="value">{{userInfo.phone || '未设置'}}</text>
+          </view>
+          
+          <view class="info-item">
+            <text class="label">电子邮箱</text>
+            <text class="value">{{userInfo.email || '未设置'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 修改信息按钮 -->
+      <button class="edit-button" bindtap="handleEdit">
+        <text class="button-text">修改信息</text>
+        <text class="arrow">></text>
+      </button>
+    </view>
+  </scroll-view>
+</view> 

@@ -1,0 +1,88 @@
+<!-- 顶部导航栏 -->
+<navigation-bar 
+  title="在线咨询" 
+  back="{{true}}" 
+  color="black" 
+  background="#FFF"
+  bind:back="navigateBack"
+></navigation-bar>
+
+<view class="chat-container">
+  <!-- 对方信息栏 -->
+  <view class="partner-header">
+    <view class="partner-info">
+      <image class="partner-avatar" src="{{partnerInfo.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+      <view class="partner-details">
+        <text class="partner-name">{{partnerInfo.name || '等待连接...'}}</text>
+        <text class="partner-title">{{partnerInfo.title || ''}}</text>
+      </view>
+    </view>
+    <view class="status-indicator {{partnerInfo.online ? 'online' : 'offline'}}">
+      {{partnerInfo.online ? '在线' : '离线'}}
+    </view>
+  </view>
+
+  <!-- 聊天区域 -->
+  <scroll-view 
+    class="message-list" 
+    scroll-y 
+    scroll-into-view="{{scrollToMessage}}"
+    enhanced="{{true}}"
+    show-scrollbar="{{false}}"
+    bounces="{{true}}"
+    bindscrolltoupper="onScrollToUpper"
+  >
+    <!-- 加载更多 -->
+    <view class="loading-more" wx:if="{{isLoading}}">
+      <text>加载中...</text>
+    </view>
+
+    <block wx:for="{{messages}}" wx:key="id">
+      <!-- 时间分割线 -->
+      <view wx:if="{{item.showTime}}" class="time-divider">
+        <text>{{item.time}}</text>
+      </view>
+
+      <!-- 对方消息 -->
+      <view wx:if="{{item.sender === 'partner'}}" class="message partner-message" id="msg-{{item.id}}">
+        <image class="avatar" src="{{partnerInfo.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill" />
+        <view class="message-content">
+          <view class="bubble">
+            <text>{{item.content}}</text>
+          </view>
+          <text class="message-time">{{item.timeStr}}</text>
+        </view>
+      </view>
+
+      <!-- 我的消息 -->
+      <view wx:else class="message my-message" id="msg-{{item.id}}">
+        <view class="message-content">
+          <view class="bubble">
+            <text>{{item.content}}</text>
+          </view>
+          <text class="message-time">{{item.timeStr}}</text>
+        </view>
+        <image class="avatar" src="{{userInfo.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill" />
+      </view>
+    </block>
+  </scroll-view>
+
+  <!-- 输入区域 -->
+  <view class="input-area">
+    <view class="input-wrapper">
+      <input 
+        type="text" 
+        placeholder="请输入消息..." 
+        bindinput="onInput" 
+        value="{{inputValue}}"
+        confirm-type="send"
+        bindconfirm="sendMessage"
+        adjust-position="{{true}}"
+        cursor-spacing="20"
+      />
+      <view class="send-button {{inputValue ? 'active' : ''}}" bindtap="sendMessage">
+        <text>发送</text>
+      </view>
+    </view>
+  </view>
+</view>
