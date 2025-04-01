@@ -1,0 +1,24 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    padding: 0 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .back-button {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+  
+  .back-button image {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .title {
+    font-size: 18px;
+    font-weight: bold;
+  }

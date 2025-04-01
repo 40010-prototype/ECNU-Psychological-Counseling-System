@@ -1,0 +1,46 @@
+<view class="container">
+  <navigation-bar title="知情者同意书" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+  
+  <scroll-view scroll-y class="scroll-container">
+    <view class="content-container">
+      <view class="agreement-card">
+        <view class="agreement-header">
+          <text class="agreement-title">知情者同意书</text>
+          <text class="agreement-subtitle">请仔细阅读以下内容</text>
+        </view>
+        
+        <view class="agreement-content">
+          <view class="agreement-section">
+            <view class="section-title">1. 信息共享</view>
+            <text class="section-text">您同意分享您的个人信息，包括但不限于姓名、联系方式、咨询记录等。这些信息将用于提供更好的咨询服务。</text>
+          </view>
+          
+          <view class="agreement-section">
+            <view class="section-title">2. 服务条款</view>
+            <text class="section-text">您同意接受我们的服务条款，包括咨询时间安排、费用支付、隐私保护等相关规定。</text>
+          </view>
+          
+          <view class="agreement-section">
+            <view class="section-title">3. 数据分析</view>
+            <text class="section-text">您同意我们使用您的数据进行分析，以改进服务质量，但不会用于其他商业用途。</text>
+          </view>
+          
+          <view class="agreement-section">
+            <view class="section-title">4. 隐私保护</view>
+            <text class="section-text">我们承诺对您的个人信息进行严格保密，未经您的同意，不会向第三方披露。</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="button-container">
+    <button 
+      class="agree-button {{canAgree ? 'active' : ''}}" 
+      disabled="{{!canAgree}}"
+      bindtap="handleAgree"
+    >
+      {{canAgree ? '同意并继续' : '请阅读同意书（剩余时间：' + remainingTime + '秒）'}}
+    </button>
+  </view>
+</view>

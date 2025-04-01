@@ -1,0 +1,32 @@
+<view class="container">
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 错误提示 -->
+  <view class="error-container" wx:elif="{{error}}">
+    <text class="error-text">{{error}}</text>
+    <button class="retry-button" bindtap="fetchContactList">重试</button>
+  </view>
+
+  <!-- 联系人列表 -->
+  <view class="contact-list" wx:else>
+    <block wx:for="{{contactList}}" wx:key="id">
+      <view class="contact-item" bindtap="handleContactTap" data-id="{{item.id}}">
+        <image class="avatar" src="{{item.avatar}}" mode="aspectFill" />
+        <view class="contact-info">
+          <text class="name">{{item.name}}</text>
+          <text class="status" wx:if="{{item.status}}">{{item.status}}</text>
+        </view>
+        <view class="arrow"></view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-container" wx:if="{{!loading && !error && contactList.length === 0}}">
+    <text class="empty-text">暂无联系人</text>
+  </view>
+</view>

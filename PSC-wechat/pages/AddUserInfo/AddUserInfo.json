@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "完善个人信息",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "navigation-bar": "/components/navigation-bar/navigation-bar"
+  }
+} 
