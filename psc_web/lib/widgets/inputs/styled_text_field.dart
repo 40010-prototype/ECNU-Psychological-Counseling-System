@@ -12,7 +12,7 @@ class StyledTextField extends StatelessWidget {
   final bool isDarkMode;
 
   const StyledTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.labelText,
     required this.hintText,
@@ -21,7 +21,7 @@ class StyledTextField extends StatelessWidget {
     this.obscurePassword = false,
     this.onToggleObscure,
     this.isDarkMode = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class StyledTextField extends StatelessWidget {
     
     final Color fillColor = isDarkMode 
         ? colorScheme.onPrimary.withOpacity(0.1)
-        : colorScheme.surfaceVariant.withOpacity(0.3);
+        : colorScheme.surfaceContainerHighest.withOpacity(0.3);
         
     final Color borderColor = isDarkMode 
         ? colorScheme.onPrimary.withOpacity(0.3)

@@ -10,12 +10,12 @@ class LeftAnimatedContainer extends StatelessWidget {
   final Widget signupFormContent;
 
   const LeftAnimatedContainer({
-    Key? key,
+    super.key,
     required this.animationController,
     required this.onToggleView,
     required this.loginWelcomeContent,
     required this.signupFormContent,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -117,12 +117,12 @@ class RightAnimatedContainer extends StatelessWidget {
   final Widget signupWelcomeContent;
 
   const RightAnimatedContainer({
-    Key? key,
+    super.key,
     required this.animationController,
     required this.onToggleView,
     required this.loginFormContent,
     required this.signupWelcomeContent,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

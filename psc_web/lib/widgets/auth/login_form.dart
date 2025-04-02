@@ -6,9 +6,9 @@ class LoginForm extends StatefulWidget {
   final VoidCallback onToggleView;
 
   const LoginForm({
-    Key? key,
+    super.key,
     required this.onToggleView,
-  }) : super(key: key);
+  });
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -30,6 +30,9 @@ class _LoginFormState extends State<LoginForm> {
   void _handleLogin() {
     // 处理登录逻辑
     print('登录: 用户名=${_usernameController.text}, 密码=${_passwordController.text}');
+    
+    // 登录成功后导航到仪表盘页面
+    Navigator.pushReplacementNamed(context, '/dashboard');
   }
 
   @override
@@ -198,9 +201,9 @@ class LoginWelcomeContent extends StatelessWidget {
   final VoidCallback onToggleView;
 
   const LoginWelcomeContent({
-    Key? key,
+    super.key,
     required this.onToggleView,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,7 @@ import '../../widgets/auth/signup_form.dart';
 /// 注意：主登录页面已经包含了注册功能，这个页面是可选的，
 /// 仅当需要单独的注册入口时使用
 class SignupPage extends StatelessWidget {
-  const SignupPage({Key? key}) : super(key: key);
+  const SignupPage({super.key});
 
   @override
   Widget build(BuildContext context) {

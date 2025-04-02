@@ -12,12 +12,10 @@ class AppTheme {
       secondary: AppColors.secondary,
       secondaryContainer: AppColors.secondaryAccent,
       surface: AppColors.surface,
-      background: AppColors.background,
       error: AppColors.error,
       onPrimary: Colors.white,
       onSecondary: AppColors.primaryText,
       onSurface: AppColors.primaryText,
-      onBackground: AppColors.primaryText,
       onError: Colors.white,
     ),
     // AppBar主题
@@ -101,8 +99,8 @@ class AppTheme {
     // 滚动条主题
     scrollbarTheme: ScrollbarThemeData(
       radius: const Radius.circular(8),
-      thickness: MaterialStateProperty.all(8),
-      thumbColor: MaterialStateProperty.all(AppColors.secondaryText.withOpacity(0.3)),
+      thickness: WidgetStateProperty.all(8),
+      thumbColor: WidgetStateProperty.all(AppColors.secondaryText.withOpacity(0.3)),
     ),
   );
 
@@ -118,12 +116,10 @@ class AppTheme {
       secondary: AppColors.secondary,
       secondaryContainer: AppColors.secondaryAccent.withOpacity(0.8),
       surface: const Color(0xFF1E1E1E),
-      background: const Color(0xFF121212),
       error: AppColors.error,
       onPrimary: Colors.white,
       onSecondary: Colors.black,
       onSurface: Colors.white,
-      onBackground: Colors.white,
       onError: Colors.white,
     ),
     // AppBar主题
@@ -207,8 +203,8 @@ class AppTheme {
     // 滚动条主题
     scrollbarTheme: ScrollbarThemeData(
       radius: const Radius.circular(8),
-      thickness: MaterialStateProperty.all(8),
-      thumbColor: MaterialStateProperty.all(Colors.grey.withOpacity(0.4)),
+      thickness: WidgetStateProperty.all(8),
+      thumbColor: WidgetStateProperty.all(Colors.grey.withOpacity(0.4)),
     ),
   );
 }

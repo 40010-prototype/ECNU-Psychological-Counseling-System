@@ -3,7 +3,7 @@ import '../../widgets/inputs/styled_text_field.dart';
 
 /// 注册表单组件
 class SignupForm extends StatefulWidget {
-  const SignupForm({Key? key}) : super(key: key);
+  const SignupForm({super.key});
 
   @override
   State<SignupForm> createState() => _SignupFormState();
@@ -163,9 +163,9 @@ class SignupWelcomeContent extends StatelessWidget {
   final VoidCallback onToggleView;
 
   const SignupWelcomeContent({
-    Key? key,
+    super.key,
     required this.onToggleView,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
