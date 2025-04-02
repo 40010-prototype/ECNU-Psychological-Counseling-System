@@ -1,0 +1,82 @@
+<!-- 顶部导航栏 -->
+<navigation-bar title="{{isLogin ? '登录' : '注册'}}" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+
+<view class="container">
+  <view class="auth-container">
+    <!-- Logo区域 -->
+    <view class="logo-section">
+      <image class="logo" src="///" mode="aspectFit"></image>
+      <text class="app-name">心理咨询预约系统</text>
+      <text class="app-desc">{{isLogin ? '欢迎回来' : '欢迎注册'}}</text>
+    </view>
+
+    <!-- 切换标签 -->
+    <view class="tab-container">
+      <view class="tab {{isLogin ? 'active' : ''}}" bindtap="switchToLogin">登录</view>
+      <view class="tab {{!isLogin ? 'active' : ''}}" bindtap="switchToRegister">注册</view>
+    </view>
+
+    <!-- 表单区域 -->
+    <view class="form-container">
+      <view class="input-group">
+        <image class="icon" src="/Pictures/First/email.png" mode="aspectFit"></image>
+        <input 
+          type="text" 
+          placeholder="请输入邮箱" 
+          bindinput="handleEmailInput"
+          value="{{email}}"
+        />
+      </view>
+      <view class="input-group">
+        <image class="icon" src="/Pictures/First/eye-close.png" mode="aspectFit"></image>
+        <input 
+          type="password" 
+          placeholder="请输入密码" 
+          bindinput="handlePasswordInput"
+          value="{{password}}"
+        />
+      </view>
+      
+      <!-- 注册时显示确认密码 -->
+      <view class="input-group" wx:if="{{!isLogin}}">
+        <image class="icon" src="/Pictures/First/eye-close.png" mode="aspectFit"></image>
+        <input 
+          type="password" 
+          placeholder="请确认密码" 
+          bindinput="handleConfirmPasswordInput"
+          value="{{confirmPassword}}"
+        />
+      </view>
+
+      <!-- 用户协议 -->
+      <view class="agreement-section">
+        <checkbox-group bindchange="handleAgreementChange">
+          <label class="agreement-label">
+            <checkbox value="agreed" checked="{{isAgreed}}"/>
+            <text class="agreement-text">我已阅读并同意</text>
+            <text class="agreement-link" bindtap="showUserAgreement">《用户协议》</text>
+            <text class="agreement-text">和</text>
+            <text class="agreement-link" bindtap="showPrivacyPolicy">《隐私政策》</text>
+          </label>
+        </checkbox-group>
+      </view>
+
+      <!-- 操作按钮 -->
+      <button 
+        class="submit-button {{isLoading ? 'loading' : ''}}" 
+        bindtap="{{isLogin ? 'handleLogin' : 'handleRegister'}}"
+        disabled="{{isLoading}}"
+      >
+        {{isLoading ? '处理中...' : (isLogin ? '登录' : '注册')}}
+      </button>
+
+      <!-- 底部提示 -->
+      <view class="bottom-tips">
+        <text class="tip-text">{{isLogin ? '还没有账号？' : '已有账号？'}}</text>
+        <text class="tip-link" bindtap="{{isLogin ? 'switchToRegister' : 'switchToLogin'}}">
+          {{isLogin ? '立即注册' : '立即登录'}}
+        </text>
+      </view>
+    </view>
+  </view>
+</view>

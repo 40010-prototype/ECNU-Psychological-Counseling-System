@@ -1,0 +1,99 @@
+
+  <navigation-bar title="完善个人信息" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<view class="container">
+  <scroll-view scroll-y class="scroll-container">
+    <view class="form-container">
+      <view class="form-header">
+        <text class="form-title">完善个人信息</text>
+        <text class="form-subtitle">请填写以下信息以完成注册</text>
+      </view>
+      
+      <view class="form-section">
+        <view class="form-group">
+          <text class="label">姓名</text>
+          <input 
+            class="input" 
+            type="text" 
+            placeholder="请输入您的姓名" 
+            value="{{name}}"
+            bindinput="handleNameInput"
+          />
+        </view>
+
+        <view class="form-group">
+          <text class="label">联系电话</text>
+          <input 
+            class="input" 
+            type="number" 
+            maxlength="11"
+            placeholder="请输入您的手机号码" 
+            value="{{phone}}"
+            bindinput="handlePhoneInput"
+          />
+        </view>
+
+        <view class="form-group">
+          <text class="label">性别</text>
+          <radio-group class="radio-group" bindchange="handleGenderChange">
+            <label class="radio-label">
+              <radio value="male" checked="{{gender === 'male'}}" color="#8B7355"/>
+              <text>男</text>
+            </label>
+            <label class="radio-label">
+              <radio value="female" checked="{{gender === 'female'}}" color="#8B7355"/>
+              <text>女</text>
+            </label>
+          </radio-group>
+        </view>
+
+        <view class="form-group">
+          <text class="label">年龄</text>
+          <input 
+            class="input" 
+            type="number" 
+            maxlength="3"
+            placeholder="请输入您的年龄" 
+            value="{{age}}"
+            bindinput="handleAgeInput"
+          />
+        </view>
+      </view>
+
+      <view class="form-section">
+        <view class="section-title">紧急联系人信息</view>
+        
+        <view class="form-group">
+          <text class="label">联系人姓名</text>
+          <input 
+            class="input" 
+            type="text" 
+            placeholder="请输入紧急联系人姓名" 
+            value="{{emergencyContact}}"
+            bindinput="handleEmergencyContactInput"
+          />
+        </view>
+
+        <view class="form-group">
+          <text class="label">联系人电话</text>
+          <input 
+            class="input" 
+            type="number" 
+            maxlength="11"
+            placeholder="请输入紧急联系人电话" 
+            value="{{emergencyPhone}}"
+            bindinput="handleEmergencyPhoneInput"
+          />
+        </view>
+      </view>
+
+      <button 
+        class="submit-button {{isFormValid ? 'active' : ''}}" 
+        bindtap="handleSubmit"
+        loading="{{isSubmitting}}"
+        disabled="{{!isFormValid || isSubmitting}}"
+      >
+        {{isSubmitting ? '提交中...' : '完成'}}
+      </button>
+    </view>
+  </scroll-view>
+</view> 

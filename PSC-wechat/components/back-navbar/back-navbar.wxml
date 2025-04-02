@@ -1,0 +1,6 @@
+<view class="navbar">
+  <view class="back-button" bindtap="handleBack">
+    <image src="/images/back-icon.png" mode="aspectFit" />
+  </view>
+  <view class="title">{{title}}</view>
+</view>
