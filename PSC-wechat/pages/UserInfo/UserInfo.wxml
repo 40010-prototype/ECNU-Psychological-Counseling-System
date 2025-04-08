@@ -28,6 +28,11 @@
         <text class="button-text">修改信息</text>
         <text class="arrow">></text>
       </button>
+
+      <!-- 退出登录按钮 -->
+      <button class="logout-button" bindtap="handleLogout">
+        <text class="button-text">退出登录</text>
+      </button>
     </view>
   </scroll-view>
 </view> 
