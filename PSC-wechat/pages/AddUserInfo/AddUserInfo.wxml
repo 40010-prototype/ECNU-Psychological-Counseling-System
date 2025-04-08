@@ -1,14 +1,39 @@
+<navigation-bar title="完善个人信息" back="{{true}}" color="black" background="#FFF"></navigation-bar>
 
-  <navigation-bar title="完善个人信息" back="{{true}}" color="black" background="#FFF"></navigation-bar>
 <view class="container">
   <scroll-view scroll-y class="scroll-container">
     <view class="form-container">
       <view class="form-header">
-        <text class="form-title">完善个人信息</text>
+        <text class="form-title"></text>
         <text class="form-subtitle">请填写以下信息以完成注册</text>
       </view>
       
+      <!-- 头像选择 -->
+      <view class="avatar-section">
+        <image 
+          class="avatar" 
+          src="{{avatarUrl || '/images/default-avatar.png'}}" 
+          mode="aspectFill"
+          bindtap="handleChooseAvatar"
+        ></image>
+        <text class="avatar-tip">点击更换头像</text>
+      </view>
+
       <view class="form-section">
+        <view class="form-group">
+          <text class="label">身份选择</text>
+          <radio-group class="radio-group" bindchange="handleRoleChange">
+            <label class="radio-label">
+              <radio value="visitor" checked="{{role === 'visitor'}}" color="#8B7355"/>
+              <text>访客</text>
+            </label>
+            <label class="radio-label">
+              <radio value="consultant" checked="{{role === 'consultant'}}" color="#8B7355"/>
+              <text>咨询师</text>
+            </label>
+          </radio-group>
+        </view>
+
         <view class="form-group">
           <text class="label">姓名</text>
           <input 

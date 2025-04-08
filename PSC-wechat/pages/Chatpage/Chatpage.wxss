@@ -1,9 +1,8 @@
 .chat-container {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 90vh;
     background-color: #F5F5F5;
-    padding-top: 180rpx;
   }
   
   /* 对方信息栏样式 */

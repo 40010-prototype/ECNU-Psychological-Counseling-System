@@ -33,5 +33,25 @@ Page({
     wx.navigateTo({
       url: '/pages/AddUserInfo/AddUserInfo'
     });
+  },
+
+  // 处理退出登录
+  handleLogout: function() {
+    wx.showModal({
+      title: '提示',
+      content: '确定要退出登录吗？',
+      success: (res) => {
+        if (res.confirm) {
+          // 清除本地存储的用户信息
+          wx.removeStorageSync('userInfo');
+          wx.removeStorageSync('token');
+          
+          // 跳转到登录页
+          wx.reLaunch({
+            url: '/pages/FirstPage/FirstPage'
+          });
+        }
+      }
+    });
   }
 }); 
