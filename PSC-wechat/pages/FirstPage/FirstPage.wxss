@@ -1,0 +1,176 @@
+/* pages/FirstPage/FirstPage.wxss */
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+  padding: 40rpx;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 750rpx;
+  background: #FFFFFF;
+  border-radius: 30rpx;
+  box-shadow: 0 8rpx 30rpx rgba(0, 0, 0, 0.08);
+  padding: 60rpx 40rpx;
+}
+
+/* Logo区域 */
+.logo-section {
+  text-align: center;
+  margin-bottom: 20rpx;
+}
+
+.logo {
+  width: 160rpx;
+  height: 10rpx;
+  margin-bottom: 30rpx;
+}
+
+.app-name {
+  font-size: 40rpx;
+  color: #333333;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.app-desc {
+  font-size: 28rpx;
+  color: #666666;
+  display: block;
+}
+
+/* 切换标签 */
+.tab-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 50rpx;
+  position: relative;
+}
+
+.tab {
+  padding: 20rpx 60rpx;
+  font-size: 32rpx;
+  color: #666666;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.tab.active {
+  color: #8B7355;
+  font-weight: 600;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40rpx;
+  height: 4rpx;
+  background: #8B7355;
+  border-radius: 2rpx;
+}
+
+/* 表单区域 */
+.form-container {
+  padding: 0 30rpx;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  border: 2rpx solid #E8E8E8;
+  border-radius: 12rpx;
+  padding: 0 30rpx;
+  margin-bottom: 30rpx;
+  transition: all 0.3s ease;
+  background: #FFFFFF;
+}
+
+.input-group:focus-within {
+  border-color: #8B7355;
+  box-shadow: 0 0 0 2rpx rgba(139, 115, 85, 0.1);
+}
+
+.icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 20rpx;
+}
+
+.input-group input {
+  flex: 1;
+  height: 88rpx;
+  font-size: 28rpx;
+  color: #333333;
+}
+
+/* 用户协议 */
+.agreement-section {
+  margin: 40rpx 0;
+}
+
+.agreement-label {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+}
+
+.agreement-label checkbox {
+  transform: scale(0.8);
+  margin-right: 8rpx;
+}
+
+.agreement-text {
+  color: #666666;
+}
+
+.agreement-link {
+  color: #8B7355;
+  margin: 0 4rpx;
+}
+
+/* 提交按钮 */
+.submit-button {
+  width: 100% !important;
+  height: 88rpx !important;
+  line-height: 88rpx !important;
+  background: linear-gradient(135deg, #8B7355 0%, #A18E76 100%) !important;
+  color: #FFFFFF !important;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-radius: 12rpx;
+  border: none;
+  margin-top: 40rpx;
+  transition: all 0.3s ease;
+}
+
+.submit-button.loading {
+  opacity: 0.7;
+}
+
+.submit-button::after {
+  border: none;
+}
+
+/* 底部提示 */
+.bottom-tips {
+  text-align: center;
+  margin-top: 40rpx;
+  font-size: 28rpx;
+}
+
+.tip-text {
+  color: #666666;
+}
+
+.tip-link {
+  color: #8B7355;
+  margin-left: 10rpx;
+  font-weight: 500;
+}

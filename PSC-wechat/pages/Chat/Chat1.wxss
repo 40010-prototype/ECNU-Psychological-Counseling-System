@@ -1,0 +1,155 @@
+.page-container {
+    min-height: 100vh;
+    background-color: #F8F9FA;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-top: 48rpx;
+  }
+  
+  .scroll-container {
+    flex: 1;
+    height: calc(100vh - 48rpx - 120rpx);
+  }
+  
+  .content-container {
+    padding: 24rpx 16rpx;
+    box-sizing: border-box;
+  }
+  
+  .agreement-card {
+    background: #FFFFFF;
+    border-radius: 24rpx;
+    padding: 40rpx 32rpx;
+    box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+  }
+  
+  .agreement-header {
+    text-align: center;
+    margin-bottom: 48rpx;
+    position: relative;
+  }
+  
+  .agreement-header::after {
+    content: '';
+    position: absolute;
+    bottom: -16rpx;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60rpx;
+    height: 4rpx;
+    background: #8B7355;
+    border-radius: 2rpx;
+  }
+  
+  .agreement-title {
+    font-size: 36rpx;
+    color: #333333;
+    font-weight: 600;
+    margin-bottom: 16rpx;
+    display: block;
+  }
+  
+  .agreement-subtitle {
+    font-size: 28rpx;
+    color: #666666;
+    display: block;
+  }
+  
+  .agreement-content {
+    width: 100%;
+  }
+  
+  .agreement-section {
+    margin-bottom: 40rpx;
+    position: relative;
+    padding-left: 32rpx;
+  }
+  
+  .agreement-section:last-child {
+    margin-bottom: 0;
+  }
+  
+  .section-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20rpx;
+  }
+  
+  .section-number {
+    width: 40rpx;
+    height: 40rpx;
+    background: #8B7355;
+    color: #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24rpx;
+    margin-right: 16rpx;
+    font-weight: 500;
+  }
+  
+  .section-title text:last-child {
+    font-size: 30rpx;
+    color: #333333;
+    font-weight: 600;
+  }
+  
+  .section-text {
+    font-size: 28rpx;
+    color: #666666;
+    line-height: 1.6;
+    display: block;
+  }
+  
+  .button-container {
+    padding: 24rpx 16rpx;
+    background: #FFFFFF;
+    box-shadow: 0 -2rpx 8rpx rgba(0, 0, 0, 0.05);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+  }
+  
+  .agree-button {
+    width: 100%;
+    height: 88rpx;
+    line-height: 88rpx;
+    text-align: center;
+    background: #CCCCCC;
+    color: #FFFFFF;
+    font-size: 32rpx;
+    border-radius: 44rpx;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8rpx;
+  }
+  
+  .agree-button.active {
+    background: linear-gradient(135deg, #8B7355 0%, #A18E76 100%);
+  }
+  
+  .agree-button[disabled] {
+    background: #CCCCCC;
+    color: #FFFFFF;
+    opacity: 0.8;
+  }
+  
+  .button-text {
+    font-weight: 500;
+  }
+  
+  .countdown-text {
+    font-size: 28rpx;
+    opacity: 0.9;
+  }

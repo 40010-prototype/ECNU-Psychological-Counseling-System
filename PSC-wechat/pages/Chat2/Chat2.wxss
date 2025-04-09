@@ -1,0 +1,130 @@
+.container {
+  min-height: 100vh;
+  background-color: #F5F5F5;
+  padding: 20rpx;
+}
+
+/* 加载状态样式 */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 4rpx solid #D4B08C;
+  border-top: 4rpx solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20rpx;
+}
+
+.loading-text {
+  color: #8B4513;
+  font-size: 28rpx;
+}
+
+/* 错误状态样式 */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 40rpx;
+}
+
+.error-text {
+  color: #8B4513;
+  font-size: 28rpx;
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.retry-button {
+  background-color: #D4B08C;
+  color: #FFFFFF;
+  border: none;
+  padding: 20rpx 40rpx;
+  border-radius: 30rpx;
+  font-size: 28rpx;
+}
+
+/* 联系人列表样式 */
+.contact-list {
+  padding: 20rpx;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  padding: 30rpx;
+  background-color: #FFFFFF;
+  border-radius: 15rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.contact-item:active {
+  transform: scale(0.98);
+  background-color: #F9F9F9;
+}
+
+.avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-right: 30rpx;
+  border: 3rpx solid #D4B08C;
+}
+
+.contact-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-size: 32rpx;
+  color: #5D4037;
+  margin-bottom: 8rpx;
+  font-weight: 500;
+}
+
+.status {
+  font-size: 24rpx;
+  color: #A0522D;
+}
+
+.arrow {
+  width: 16rpx;
+  height: 16rpx;
+  border-top: 4rpx solid #D4B08C;
+  border-right: 4rpx solid #D4B08C;
+  transform: rotate(45deg);
+}
+
+/* 空状态样式 */
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.empty-text {
+  color: #8B4513;
+  font-size: 28rpx;
+}
+
+/* 动画 */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

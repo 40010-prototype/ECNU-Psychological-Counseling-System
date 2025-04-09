@@ -1,0 +1,57 @@
+{
+    "pages": [
+        "pages/MainPage/MainPage",
+        "pages/Chat/Chat1",
+        "pages/Chatpage/Chatpage",
+        "pages/FirstPage/FirstPage",
+        "pages/index/index",
+        "pages/History/History",
+        "pages/AddUserInfo/AddUserInfo",
+        "components/back-navbar/back-navbar",
+        "pages/Chat2/Chat2",
+        "pages/UserInfo/UserInfo"
+    ],
+    "window": {
+        "navigationBarTextStyle": "black",
+        "renderer": "webview",
+        "navigationStyle": "default"
+    },
+    "style": "v2",
+    "renderer": "skyline",
+    "rendererOptions": {
+        "skyline": {
+            "defaultDisplayBlock": true,
+            "defaultContentBox": true,
+            "tagNameStyleIsolation": "legacy",
+            "disableABTest": true,
+            "sdkVersionBegin": "3.0.0",
+            "sdkVersionEnd": "15.255.255"
+        }
+    },
+    "tabBar": {
+        "list": [
+            {
+                "pagePath": "pages/MainPage/MainPage",
+                "text": "首页",
+                "iconPath": "/Pictures/Tabicon/home.png",
+                "selectedIconPath": "/Pictures/Tabicon/home - 副本.png"
+            },
+            {
+                "pagePath": "pages/Chat/Chat1",
+                "text": "暂无咨询",
+                "iconPath": "/Pictures/Tabicon/Online consultation.png",
+                "selectedIconPath": "/Pictures/Tabicon/Online consultation - 副本.png"
+            },
+            {
+                "pagePath": "pages/UserInfo/UserInfo",
+                "text": "我的信息",
+                "iconPath": "/Pictures/Tabicon/my.png",
+                "selectedIconPath": "/Pictures/Tabicon/my - 副本.png"
+            }
+        ]
+    },
+    "componentFramework": "glass-easel",
+    "sitemapLocation": "sitemap.json",
+    "lazyCodeLoading": "requiredComponents"
+}
+
