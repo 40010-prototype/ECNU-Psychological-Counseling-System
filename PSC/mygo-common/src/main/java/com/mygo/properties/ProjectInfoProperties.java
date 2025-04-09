@@ -10,4 +10,5 @@ public class ProjectInfoProperties {
     private String projectName;
 
     private String version;
+
 }

@@ -1,12 +1,11 @@
 package com.mygo.controller.admin;
 
-import com.mygo.domain.dto.RegisterDTO;
+import com.mygo.domain.dto.AdminRegisterDTO;
 import com.mygo.result.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -25,11 +24,8 @@ public class HelloController {
     public Result<String> hello(HttpServletRequest request) {
         String ip = request.getRemoteAddr();
         AtomicInteger count = countmap.computeIfAbsent(ip, k -> new AtomicInteger(0));
-        return Result.success(String.format("Hello world %d", count.incrementAndGet()));
+        return Result.success(String.format("Hello world %d from %s", count.incrementAndGet(),ip));
     }
 
-    @PostMapping("/complete")
-    public Result<Void> test(@RequestBody @Valid RegisterDTO registerDTO){
-        return Result.success();
-    }
+
 }

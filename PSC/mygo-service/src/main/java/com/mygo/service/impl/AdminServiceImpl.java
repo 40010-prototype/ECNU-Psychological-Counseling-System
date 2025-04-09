@@ -1,25 +1,28 @@
 package com.mygo.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mygo.constant.ErrorMessage;
 import com.mygo.constant.RedisConstant;
-import com.mygo.domain.dto.LoginDTO;
-import com.mygo.domain.dto.RegisterDTO;
+import com.mygo.domain.dto.AdminLoginDTO;
+import com.mygo.domain.dto.AdminRegisterDTO;
 import com.mygo.domain.dto.ResetPasswordDTO;
 import com.mygo.domain.entity.Admin;
-import com.mygo.domain.vo.LoginVO;
+import com.mygo.domain.vo.AdminInfoVO;
+import com.mygo.domain.vo.AdminLoginVO;
 import com.mygo.exception.BadRequestException;
 import com.mygo.mapper.AdminMapper;
 import com.mygo.service.AdminService;
-import com.mygo.utils.JwtTool;
-import com.mygo.utils.MailUtils;
-import org.apache.commons.lang3.RandomStringUtils;
+import com.mygo.utils.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
+@Slf4j
 @Service
 public class AdminServiceImpl implements AdminService {
 
@@ -33,87 +36,120 @@ public class AdminServiceImpl implements AdminService {
 
     private final MailUtils mailUtils;
 
+    private final IdTool idTool;
 
     @Autowired
-    public AdminServiceImpl(AdminMapper adminMapper, JwtTool jwtTool, StringRedisTemplate stringRedisTemplate, MailUtils mailUtils) {
+    public AdminServiceImpl(AdminMapper adminMapper, JwtTool jwtTool, StringRedisTemplate stringRedisTemplate,
+                            MailUtils mailUtils, IdTool idTool) {
         this.adminMapper = adminMapper;
         this.jwtTool = jwtTool;
         this.stringRedisTemplate = stringRedisTemplate;
         this.mailUtils = mailUtils;
+        this.idTool = idTool;
     }
 
     /**
-     * 根据用户名和密码登陆,如果顺利登陆,返回一个token
+     * 登陆
      *
-     * @param loginDTO 登陆DTO
-     * @return token
+     * @param adminLoginDTO 登陆DTO，包括如下字段：<br>
+     *                      用户名、密码
+     * @return jwt令牌、用户类型
      */
     @Override
-    public LoginVO login(LoginDTO loginDTO) throws JsonProcessingException {
+    public AdminLoginVO login(AdminLoginDTO adminLoginDTO) throws JsonProcessingException {
+        log.info("登录服务");
         //1.根据用户名查找是否存在该用户
-        Admin admin = adminMapper.getAdminByName(loginDTO.getName());
+        Admin admin = adminMapper.getAdminByName(adminLoginDTO.getName());
         if (admin == null) {
-            throw new BadRequestException("用户不存在");
+            throw new BadRequestException(ErrorMessage.USER_NOT_FOUND);
         }
         //2.判断密码是否正确
-        if (!admin.getPassword()
-                .equals(loginDTO.getPassword())) {
-            throw new BadRequestException("密码错误");
+        if (!PasswordEncoder.matches(admin.getPassword(), adminLoginDTO.getPassword())) {
+            throw new BadRequestException(ErrorMessage.PASSWORD_ERROR);
         }
+        log.info(String.valueOf(admin.toString()));
         //3.生成JWT令牌
-        String jwt = jwtTool.createJWT(admin.getId());
+        String jwt = jwtTool.createJWT(admin.getAdminId());
         //4.将JWT保存在redis中
-        String json = objectMapper.writeValueAsString(admin);
-        //这里不使用hash,因为要分别设置过期时间
         stringRedisTemplate.opsForValue()
-                .set(RedisConstant.JWT_KEY + admin.getId(), json);
+                .set(RedisConstant.JWT_KEY + admin.getAdminId(), RedisConstant.JWT_VALUE);
         //5.设置过期时间
-        stringRedisTemplate.expire(RedisConstant.JWT_KEY + admin.getId(), RedisConstant.JWT_EXPIRE, RedisConstant.JWT_EXPIRE_UNIT);
+        stringRedisTemplate.expire(
+                RedisConstant.JWT_KEY + admin.getAdminId(), RedisConstant.JWT_EXPIRE, RedisConstant.JWT_EXPIRE_UNIT);
+        log.info("redis设置成功");
         //6.返回token
-        return new LoginVO(jwt, admin.getRole());
+        return new AdminLoginVO(jwt, admin.getRole());
     }
 
+    /**
+     * 注册用户
+     * @param adminRegisterDTO 注册DTO，包括如下字段：<br>
+     *                         用户名、密码、邮箱、身份
+     */
     @Override
-    public Admin findByUserName(String username) {
-        return adminMapper.getAdminByName(username);
+    public void register(AdminRegisterDTO adminRegisterDTO) throws JsonProcessingException {
+        adminMapper.addAdmin(idTool.getPersonId(), adminRegisterDTO.getUsername(), adminRegisterDTO.getName(),
+                adminRegisterDTO.getEmail(), PasswordEncoder.encode(adminRegisterDTO.getPassword()),
+                adminRegisterDTO.getRole(), objectMapper.writeValueAsString(adminRegisterDTO.getProfile()));
     }
 
-    @Override
-    public void register(RegisterDTO registerDTO) {
-        adminMapper.addAdmin(registerDTO.getName(), registerDTO.getPassword(), registerDTO.getEmail());
-    }
-
+    /**
+     * 发送邮箱验证码
+     * @param name 用户名
+     * @return 用户邮箱
+     */
     @Override
     public String sendEmail(String name) {
         //1.通过用户名查询邮件
-        String email = adminMapper.getEmailByName(name);
+        String email = adminMapper.getEmailByAccountName(name);
         if (email == null) {
-            throw new BadRequestException("用户名不存在");
+            throw new BadRequestException(ErrorMessage.USER_NOT_FOUND);
         }
         //2.生成6为随机数字
-        String num = RandomStringUtils.randomNumeric(6);
+        String num = RandomUtil.randomNumbers(6);
         //3.发送邮件
-        String subject = "验证码";
+        String subject = "找回密码验证码";
         String text = "你的验证码为：" + num;
         mailUtils.sendMail(email, subject, text);
         //4.把数据存在redis中
         stringRedisTemplate.opsForValue()
-                .set(RedisConstant.VERIFY_KEY + name, num, RedisConstant.VERIFY_EXPIRE, RedisConstant.VERIFY_EXPIRE_UNIT);
+                .set(RedisConstant.ADMIN_VERIFY_KEY +
+                        name, num, RedisConstant.VERIFY_EXPIRE, RedisConstant.VERIFY_EXPIRE_UNIT);
         //5.返回邮箱（用于前端展示）
         return email;
     }
 
+    /**
+     * 检查用户发送的邮箱验证码。如果正确，重置密码。
+     * @param resetPasswordDTO 重置密码DTO，包括如下字段：<br>
+     *                         用户名，验证码，密码
+     */
     @Override
     public void resetPassword(ResetPasswordDTO resetPasswordDTO) {
         String name = resetPasswordDTO.getName();
         //1.从redis读取验证码
         String verificationCode = stringRedisTemplate.opsForValue()
-                .get(RedisConstant.VERIFY_KEY + name);
+                .get(RedisConstant.ADMIN_VERIFY_KEY + name);
         //2.判断验证码是否正确
-        if (!Objects.equals(verificationCode, resetPasswordDTO.getVerificationCode())) {
-            throw new BadRequestException("验证码错误");
+        if (!Objects.equals(verificationCode, resetPasswordDTO.getVerifyCode())) {
+            throw new BadRequestException(ErrorMessage.VERIFY_CODE_ERROR);
         }
         //3.修改密码
-
+        adminMapper.updatePassword(resetPasswordDTO.getName(), PasswordEncoder.encode(resetPasswordDTO.getPassword()));
     }
+
+    @Override
+    public AdminInfoVO getAdminInfo() {
+        Integer id = Context.getId();
+        Admin admin = adminMapper.getAdminById(id);
+        return AdminInfoVO.builder()
+                .adminId(admin.getAdminId())
+                .name(admin.getRealName())
+                .username(admin.getAccountName())
+                .email(admin.getEmail())
+                .role(admin.getRole())
+                .createdAt(admin.getCreatedAt())
+                .build();
+    }
+
 }

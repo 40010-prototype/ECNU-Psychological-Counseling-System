@@ -7,8 +7,7 @@ import lombok.Data;
 
 @Data
 @Tag(name = "登陆DTO", description = "登陆DTO")
-public class LoginDTO {
-
+public class AdminLoginDTO {
 
     @NotBlank(message = "用户名为空")
     @Schema(description = "用户名")
@@ -16,4 +15,5 @@ public class LoginDTO {
 
     @Schema(description = "密码")
     String password;
+
 }

@@ -24,5 +24,6 @@ public class BaseException extends RuntimeException {
         super(cause);
         this.code = code;
     }
+
 }
 

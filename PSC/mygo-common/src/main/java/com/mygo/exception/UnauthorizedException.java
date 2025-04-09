@@ -15,4 +15,5 @@ public class UnauthorizedException extends BaseException {
     public UnauthorizedException(Throwable cause) {
         super(cause, HttpServletResponse.SC_UNAUTHORIZED);
     }
+
 }
