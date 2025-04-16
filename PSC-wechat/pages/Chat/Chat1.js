@@ -3,38 +3,57 @@ Page({
       canAgree: false,
       remainingTime: 10,
     },
+    onShow() {
+      // 在页面显示时立即隐藏 TabBar
+    },
   
     onLoad() {
-      wx.hideTabBar(); // 隐藏 tabBar
+      // 开始倒计时
       this.startCountdown();
     },
   
     onUnload() {
-      wx.showTabBar(); // 显示 tabBar
+      // 页面卸载时显示 TabBar
+      wx.showTabBar({
+        animation: false
+      });
     },
   
     startCountdown() {
-      let countdown = setInterval(() => {
-        const remainingTime = this.data.remainingTime - 1;
-        if (remainingTime <= 0) {
-          clearInterval(countdown);
+      let timeLeft = 10;
+      const timer = setInterval(() => {
+        timeLeft--;
+        this.setData({
+          remainingTime: timeLeft
+        });
+  
+        if (timeLeft <= 0) {
+          clearInterval(timer);
           this.setData({
-            canAgree: true,
-            remainingTime: 0,
-          });
-        } else {
-          this.setData({
-            remainingTime,
+            canAgree: true
           });
         }
       }, 1000);
     },
   
     handleAgree() {
-      if (this.data.canAgree) {
-        wx.navigateTo({
-          url: '/pages/Chat2/Chat2',
+      if (!this.data.canAgree) return;
+  
+      // 跳转到聊天页面
+      wx.navigateTo({
+        url: '/pages/Chatpage/Chatpage'
+      });
+    },
+    onBack() {
+        // 自定义返回逻辑
+        wx.navigateBack({
+          delta: 1, // 返回前2个页面（可调整）
+          success() {
+            console.log("返回成功");
+          },
+          fail(err) {
+            console.error("返回失败", err);
+          }
         });
       }
-    },
   });
