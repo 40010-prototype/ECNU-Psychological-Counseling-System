@@ -10,6 +10,9 @@ import 'package:psc_web/providers/appointment/appointment_provider.dart';
 import 'package:psc_web/services/appointment/appointment_service.dart';
 import 'package:psc_web/providers/user/user_provider.dart';
 import 'package:psc_web/services/user/user_service.dart';
+import 'package:psc_web/providers/auth/auth_provider.dart';
+import 'package:psc_web/services/auth/auth_service.dart';
+import 'package:psc_web/providers/auth/register_provider.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -29,6 +32,12 @@ class App extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => UserProvider(MockUserService()),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(AuthService()), // 实例化 AuthProvider 并传入 AuthService
+        ),
+        ChangeNotifierProvider(
+          create: (_) => RegisterProvider(AuthService()), // 添加 RegisterProvider
         ),
       ],
       child: MaterialApp(

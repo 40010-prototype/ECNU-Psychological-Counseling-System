@@ -205,7 +205,7 @@ class MockUserService implements UserService {
       throw Exception('User is not a counselor');
     }
     
-    final counselorProfile = CounselorProfile.fromJson(counselor.profile);
+    final counselorProfile = CounselorProfile.fromJson(counselor.profile ?? {});
     if (counselorProfile.supervisor == null) {
       return null;
     }
@@ -220,7 +220,7 @@ class MockUserService implements UserService {
       throw Exception('User is not a supervisor');
     }
     
-    final supervisorProfile = SupervisorProfile.fromJson(supervisor.profile);
+    final supervisorProfile = SupervisorProfile.fromJson(supervisor.profile ?? {}); 
     final counselors = <User>[];
     for (final counselorId in supervisorProfile.supervisees) {
       try {
@@ -247,7 +247,7 @@ class MockUserService implements UserService {
       }
       
       // 更新咨询师的督导
-      final counselorProfile = CounselorProfile.fromJson(counselor.profile);
+      final counselorProfile = CounselorProfile.fromJson(counselor.profile ?? {});
       final updatedCounselor = counselor.copyWith(
         profile: CounselorProfile(
           title: counselorProfile.title,
@@ -259,7 +259,7 @@ class MockUserService implements UserService {
       );
       
       // 更新督导的咨询师列表
-      final supervisorProfile = SupervisorProfile.fromJson(supervisor.profile);
+      final supervisorProfile = SupervisorProfile.fromJson(supervisor.profile ?? {});
       if (!supervisorProfile.supervisees.contains(counselorId)) {
         final updatedSupervisor = supervisor.copyWith(
           profile: SupervisorProfile(

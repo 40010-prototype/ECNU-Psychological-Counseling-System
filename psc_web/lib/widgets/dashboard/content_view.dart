@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:psc_web/models/menu_item_model.dart';
-import 'package:psc_web/widgets/dashboard/pages/home_page.dart';
-import 'package:psc_web/widgets/dashboard/pages/consultation_records_page.dart';
-import 'package:psc_web/widgets/dashboard/pages/schedule_page.dart';
-import 'package:psc_web/widgets/dashboard/pages/counselor_management_page.dart';
-import 'package:psc_web/widgets/dashboard/pages/supervisor_management_page.dart';
-import 'package:psc_web/widgets/dashboard/pages/user_management_page.dart';
-import 'package:psc_web/widgets/dashboard/pages/appointment_management_page.dart';
-import 'package:psc_web/widgets/dashboard/pages/settings_page.dart';
+import 'package:psc_web/pages/dashboard/admin/pages/home/home_page.dart';
+import 'package:psc_web/pages/dashboard/admin/pages/consultation_records/consultation_records_page.dart';
+import 'package:psc_web/pages/dashboard/admin/pages/schedule/schedule_page.dart';
+import 'package:psc_web/pages/dashboard/admin/pages/counselor_management/counselor_management_page.dart';
+import 'package:psc_web/pages/dashboard/admin/pages/supervisor_management/supervisor_management_page.dart';
+import 'package:psc_web/pages/dashboard/admin/pages/user_management/user_management_page.dart';
+import 'package:psc_web/pages/dashboard/admin/pages/appointment_management/appointment_management_page.dart';
+import 'package:psc_web/pages/dashboard/admin/pages/settings/settings_page.dart';
 import 'package:psc_web/providers/consultation/consultation_provider.dart';
 
 /// 内容视图组件

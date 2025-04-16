@@ -23,8 +23,8 @@ class User {
   final String email;         // 邮箱
   final String? phone;        // 电话
   final UserRole role;        // 角色
-  final UserStatus status;    // 状态
-  final Map<String, dynamic> profile;  // 用户详细信息
+  final UserStatus? status;    // 状态
+  final Map<String, dynamic>? profile;  // 用户详细信息
   final DateTime createdAt;   // 创建时间
   final DateTime? updatedAt;  // 更新时间
   final String? lastLoginIp;  // 最后登录IP
@@ -38,8 +38,8 @@ class User {
     required this.email,
     this.phone,
     required this.role,
-    required this.status,
-    required this.profile,
+    this.status,
+    this.profile,
     required this.createdAt,
     this.updatedAt,
     this.lastLoginIp,
@@ -57,10 +57,14 @@ class User {
       role: UserRole.values.firstWhere(
         (e) => e.toString() == 'UserRole.${json['role']}',
       ),
-      status: UserStatus.values.firstWhere(
-        (e) => e.toString() == 'UserStatus.${json['status']}',
-      ),
-      profile: json['profile'] as Map<String, dynamic>,
+      status: json['status'] != null
+          ? UserStatus.values.firstWhere(
+              (e) => e.toString() == 'UserStatus.${json['status']}',
+            )
+          : null,
+      profile: json['profile'] != null
+          ? json['profile'] as Map<String, dynamic>
+          : null,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: json['updatedAt'] != null
           ? DateTime.parse(json['updatedAt'] as String)

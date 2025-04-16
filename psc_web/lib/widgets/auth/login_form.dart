@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import '../../widgets/inputs/styled_text_field.dart';
+import 'package:psc_web/models/user/user.dart';
+import 'package:psc_web/providers/auth/auth_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:psc_web/widgets/inputs/styled_text_field.dart';
 
 /// 登录表单组件
 class LoginForm extends StatefulWidget {
   final VoidCallback onToggleView;
 
-  const LoginForm({
-    super.key,
-    required this.onToggleView,
-  });
+  const LoginForm({super.key, required this.onToggleView});
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -19,6 +19,8 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _passwordController = TextEditingController();
   bool _obscurePassword = true;
   bool _rememberMe = false;
+  final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -27,12 +29,85 @@ class _LoginFormState extends State<LoginForm> {
     super.dispose();
   }
 
-  void _handleLogin() {
-    // 处理登录逻辑
-    print('登录: 用户名=${_usernameController.text}, 密码=${_passwordController.text}');
-    
-    // 登录成功后导航到仪表盘页面
-    Navigator.pushReplacementNamed(context, '/dashboard');
+  void _handleLogin() async {
+    // // 处理登录逻辑
+    // print('登录: 用户名=${_usernameController.text}, 密码=${_passwordController.text}');
+
+    // // 模拟用户角色 (在实际应用中，这将从后端获取)
+    // UserRole userRole;
+
+    // // 简单示例：根据用户名判断角色
+    // if (_usernameController.text.contains('admin')) {
+    //   userRole = UserRole.admin;
+    // } else if (_usernameController.text.contains('counselor')) {
+    //   userRole = UserRole.counselor;
+    // } else if (_usernameController.text.contains('supervisor')) {
+    //   userRole = UserRole.supervisor;
+    // } else {
+    //   // 默认角色
+    //   userRole = UserRole.client;
+    // }
+
+    // // 登录成功后导航到仪表盘页面，并传递用户角色
+    // Navigator.pushReplacementNamed(
+    //   context,
+    //   '/dashboard',
+    //   arguments: {'userRole': userRole},
+    // );
+
+    // return;
+
+
+    if (_formKey.currentState?.validate() ?? true) {
+      setState(() {
+        _isLoading = true; // 开始登录时显示加载
+      });
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      final username = _usernameController.text.trim();
+      final password = _passwordController.text.trim();
+
+      bool loginSuccess = await authProvider.login(username, password);
+
+      if (loginSuccess) {
+        // 登录成功后获取用户数据
+        bool userDataFetched = await authProvider.fetchUserData();
+        setState(() {
+          _isLoading = authProvider.isFetchingUserData; // 更新加载状态
+        });
+        if (userDataFetched) {
+          final loggedInUser = authProvider.loggedInUser;
+          if (loggedInUser != null && loggedInUser.role != null) {
+            Navigator.pushReplacementNamed(
+              context,
+              '/dashboard',
+              arguments: {'userRole': loggedInUser.role},
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('登录成功，但用户信息获取失败。')),
+            );
+            print('错误：登录成功但用户信息或角色为空');
+            setState(() {
+              _isLoading = false; // 发生错误停止加载
+            });
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(authProvider.errorMessage ?? '获取用户数据失败。')),
+          );
+          setState(() {
+            _isLoading = false; // 获取数据失败停止加载
+          });
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(authProvider.errorMessage ?? '登录失败，请检查用户名和密码。')),
+        );
+        setState(() {
+          _isLoading = false; // 登录失败停止加载
+        });
+      }
+    }
   }
 
   @override
@@ -42,12 +117,8 @@ class _LoginFormState extends State<LoginForm> {
 
     return Center(
       child: Container(
-        constraints: const BoxConstraints(
-          maxWidth: 450,
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 40,
-        ),
+        constraints: const BoxConstraints(maxWidth: 450),
+        padding: const EdgeInsets.symmetric(horizontal: 40),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -119,9 +190,7 @@ class _LoginFormState extends State<LoginForm> {
                     const SizedBox(width: 8),
                     Text(
                       '记住我',
-                      style: TextStyle(
-                        color: colorScheme.onSurfaceVariant,
-                      ),
+                      style: TextStyle(color: colorScheme.onSurfaceVariant),
                     ),
                   ],
                 ),
@@ -148,9 +217,7 @@ class _LoginFormState extends State<LoginForm> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: colorScheme.primary,
                 foregroundColor: colorScheme.onPrimary,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                ),
+                padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -160,10 +227,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               child: const Text(
                 '登录',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(height: 24),
@@ -174,9 +238,7 @@ class _LoginFormState extends State<LoginForm> {
               children: [
                 Text(
                   '还没有账号? ',
-                  style: TextStyle(
-                    color: colorScheme.onSurfaceVariant,
-                  ),
+                  style: TextStyle(color: colorScheme.onSurfaceVariant),
                 ),
                 TextButton(
                   onPressed: widget.onToggleView,
@@ -200,10 +262,7 @@ class _LoginFormState extends State<LoginForm> {
 class LoginWelcomeContent extends StatelessWidget {
   final VoidCallback onToggleView;
 
-  const LoginWelcomeContent({
-    super.key,
-    required this.onToggleView,
-  });
+  const LoginWelcomeContent({super.key, required this.onToggleView});
 
   @override
   Widget build(BuildContext context) {
@@ -224,11 +283,7 @@ class LoginWelcomeContent extends StatelessWidget {
               shape: BoxShape.circle,
               color: Colors.white.withOpacity(0.2),
             ),
-            child: Icon(
-              Icons.psychology,
-              size: 40,
-              color: decorationTextColor,
-            ),
+            child: Icon(Icons.psychology, size: 40, color: decorationTextColor),
           ),
           const SizedBox(height: 24),
           Text(
@@ -253,10 +308,7 @@ class LoginWelcomeContent extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               foregroundColor: colorScheme.primary,
               backgroundColor: colorScheme.onPrimary,
-              padding: const EdgeInsets.symmetric(
-                vertical: 16,
-                horizontal: 40,
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
               ),
@@ -266,14 +318,11 @@ class LoginWelcomeContent extends StatelessWidget {
             ),
             child: Text(
               '注册账号',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
         ],
       ),
     );
   }
-} 
+}

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:psc_web/models/menu_item_model.dart';
-import 'package:psc_web/theme/app_colors.dart';
 
 /// 侧边栏组件
 class SideBar extends StatefulWidget {

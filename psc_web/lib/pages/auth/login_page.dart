@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     try {
       _animationController.toggleView();
     } catch (e) {
-      // 更优雅的错误处理
+      // 错误处理
       debugPrint('动画执行出错: $e');
       setState(() {
         _isAnimating = false;
@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                   animationController: _animationController,
                   onToggleView: _toggleView,
                   loginWelcomeContent: LoginWelcomeContent(onToggleView: _toggleView),
-                  signupFormContent: SignupForm(),
+                  signupFormContent: SignupForm(onToggleView: _toggleView),
                 ),
 
                 // 右侧区域 - 动画容器

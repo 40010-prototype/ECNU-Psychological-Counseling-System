@@ -1,0 +1,73 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:psc_web/models/auth/login_request.dart';
+import 'package:psc_web/models/user/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:psc_web/constants/api_constants.dart';
+
+class AuthService {
+  static String get _loginUrl => ApiConstants.loginUrl;
+  static String get _userDataUrl => ApiConstants.getInfoUrl;
+
+  Future<String?> login(LoginRequest loginRequest) async {
+    try {
+      final response = await http.post(
+        Uri.parse(_loginUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(loginRequest.toJson()),
+      );
+
+      if (response.statusCode == 200) {
+        return response.body;
+      } else {
+        print('登录失败，状态码: ${response.statusCode}');
+        print('响应体: ${response.body}');
+        return null;
+      }
+    } catch (error) {
+      print('登录过程中发生错误: $error');
+      return null;
+    }
+  }
+
+  Future<User?> fetchUserDataWithToken(String token) async {
+    try {
+      final response = await http.get(
+        Uri.parse(_userDataUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        return User.fromJson(responseData);
+      } else {
+        print('获取用户数据失败，状态码: ${response.statusCode}');
+        print('响应体: ${response.body}');
+        return null;
+      }
+    } catch (error) {
+      print('获取用户数据过程中发生错误: $error');
+      return null;
+    }
+  }
+
+  Future<void> saveTokenToLocalStorage(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('authToken', token);
+  }
+
+  Future<String?> getTokenFromLocalStorage() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('authToken');
+  }
+
+  Future<void> removeTokenFromLocalStorage() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('authToken');
+  }
+}
