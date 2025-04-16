@@ -15,4 +15,5 @@ public class BadRequestException extends BaseException {
     public BadRequestException(Throwable cause) {
         super(cause, HttpServletResponse.SC_BAD_REQUEST);
     }
+
 }

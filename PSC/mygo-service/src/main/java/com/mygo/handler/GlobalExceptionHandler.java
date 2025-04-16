@@ -15,14 +15,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     private ObjectMapper objectMapper = new ObjectMapper();
-
 
     /**
      * 自定义异常处理器
@@ -48,15 +46,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException e) throws JsonProcessingException {
-
-        List<String> errors = e.getBindingResult().getAllErrors()
+        List<String> errors = e.getBindingResult()
+                .getAllErrors()
                 .stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .toList();
-
-
-        return ResponseEntity.status(HttpServletResponse.SC_BAD_REQUEST).body(Result.error(errors.toString()));
+        return ResponseEntity.status(HttpServletResponse.SC_BAD_REQUEST)
+                .body(Result.error(errors.toString()));
     }
-
 
 }

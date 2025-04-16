@@ -10,7 +10,7 @@ Page({
       email: '',
       password: '',
       confirmPassword: '',
-      baseUrl: 'http://127.0.0.1:4523/m1/6011225-5700055-default' // 后端API基础地址
+      baseUrl: 'https://soyorinlove.me' // 后端API基础地址
     },
   
     onLoad() {
@@ -147,7 +147,7 @@ Page({
           password: this.data.password
         },
         success: (res) => {
-          if (res.data.code === 200) {
+          if ( res.data.code ===1) {
             // 登录成功，保存用户信息和token
             const userInfo = {
               email: this.data.email,
@@ -202,7 +202,7 @@ Page({
           password: this.data.password
         },
         success: (res) => {
-          if (res.data.code === 200) {
+          if (res.data.code === 1) {
             wx.showToast({
               title: '注册成功',
               icon: 'success',

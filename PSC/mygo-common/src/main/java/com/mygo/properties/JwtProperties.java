@@ -19,4 +19,5 @@ public class JwtProperties {
     private String alias;
 
     private Duration tokenTTL;
+
 }

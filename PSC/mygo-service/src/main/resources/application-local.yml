@@ -10,3 +10,5 @@ mygo:
     redis:
       host: localhost
       port: 6379
+  static:
+    img: D:\Desktop\img\

@@ -8,10 +8,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MygoApplication {
 
-
-    //TODO 找回密码
+    //TODO测试能不能防SQL注入
+    //TODO如果不用mybatis-plus的话，就删了
+    //TODO报错信息整理为常量类
     public static void main(String[] args) {
         SpringApplication.run(MygoApplication.class, args);
     }
+
 }
 

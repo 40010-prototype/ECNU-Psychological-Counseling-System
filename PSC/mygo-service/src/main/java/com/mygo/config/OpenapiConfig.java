@@ -21,7 +21,8 @@ public class OpenapiConfig {
                 //TODO分组默认按照名称排序.为了前期开发,添加编号1、2,后期删去
                 .group("1.管理端接口")//分组名称
                 //分组信息
-                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title(projectInfoProperties.getProjectName() + "接口文档")
+                .addOpenApiCustomizer(openApi -> openApi.info(new Info().title(
+                                projectInfoProperties.getProjectName() + "接口文档")
                         .description(projectInfoProperties.getProjectName() + "接口文档")
                         .version(projectInfoProperties.getVersion())
                         .contact(new Contact().name("eustia")
@@ -40,6 +41,5 @@ public class OpenapiConfig {
                 .pathsToMatch("/user/**")  // 接口请求路径规则
                 .build();
     }
-
 
 }

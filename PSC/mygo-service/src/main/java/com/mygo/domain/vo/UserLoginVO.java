@@ -1,12 +1,15 @@
 package com.mygo.domain.vo;
 
-import com.mygo.domain.enumeration.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+//Json序列化需要Getter
 @Getter
 @AllArgsConstructor
-public class LoginVO {
+public class UserLoginVO {
+
     private String token;
-    private Role role;
+
+    private boolean needCompleteInfo;
+
 }

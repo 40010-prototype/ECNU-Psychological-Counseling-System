@@ -1,5 +1,5 @@
 {
     "usingComponents": {
-      "custom-navbar": "/components/back-navbar/back-navbar"
+        "navigation-bar": "/components/navigation-bar/navigation-bar"
     }
   }

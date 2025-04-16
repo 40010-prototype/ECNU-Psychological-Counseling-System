@@ -13,13 +13,16 @@ Page({
     // 从后端获取联系人列表
     fetchContactList: function() {
       this.setData({ loading: true });
-      
+      const token = wx.getStorageSync('token');
       // 调用后端API获取联系人列表
       wx.request({
         url: 'YOUR_API_ENDPOINT/contacts', // 替换为您的实际API端点
         method: 'GET',
+        data:{
+            token : token
+        },
         success: (res) => {
-          if (res.statusCode === 200) {
+          if (res.statusCode === 1) {
             this.setData({
               contactList: res.data.contacts,
               loading: false

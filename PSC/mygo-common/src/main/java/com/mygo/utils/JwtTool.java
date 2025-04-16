@@ -5,6 +5,7 @@ import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTValidator;
 import cn.hutool.jwt.signers.JWTSigner;
 import cn.hutool.jwt.signers.JWTSignerUtil;
+import com.mygo.constant.ErrorMessage;
 import com.mygo.exception.UnauthorizedException;
 import com.mygo.properties.JwtProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.util.Date;
 public class JwtTool {
 
     private final JWTSigner signer;
+
     private final JwtProperties jwtProperties;
 
     @Autowired
@@ -29,7 +31,7 @@ public class JwtTool {
         this.jwtProperties = jwtProperties;
     }
 
-    public String createJWT(Long id) {
+    public String createJWT(Integer id) {
         return JWT.create()
                 .setPayload("id", id)
                 .setExpiresAt(new Date(System.currentTimeMillis() + jwtProperties.getTokenTTL()
@@ -38,43 +40,44 @@ public class JwtTool {
                 .sign();
     }
 
-    public Long parseJWT(String token) {
+    public Integer parseJWT(String token) {
         //1.判断token是不是空
         if (token == null) {
-            throw new UnauthorizedException("未登录");
+            throw new UnauthorizedException(ErrorMessage.NOT_LOGIN);
         }
-        // 2.校验并解析jwt
+        //2.校验并解析jwt
         JWT jwt;
         try {
             jwt = JWT.of(token)
                     .setSigner(signer);
         } catch (Exception e) {
-            throw new UnauthorizedException("无法解析token", e);
+            throw new UnauthorizedException(ErrorMessage.INVALID_TOKEN, e);
         }
-        // 2.校验jwt是否有效
+        //2.校验jwt是否有效
         if (!jwt.verify()) {
-            // 验证失败
-            throw new UnauthorizedException("无效的token");
+            //验证失败
+            throw new UnauthorizedException(ErrorMessage.INVALID_TOKEN);
         }
-        // 3.校验是否过期
+        //3.校验是否过期
         try {
             JWTValidator.of(jwt)
                     .validateDate();
         } catch (ValidateException e) {
-            throw new UnauthorizedException("token已经过期", e);
+            throw new UnauthorizedException(ErrorMessage.TOKEN_EXPIRED, e);
         }
-        // 4.数据格式校验
+        //4.数据格式校验
         Object userPayload = jwt.getPayload("id");
         if (userPayload == null) {
-            // 数据为空
-            throw new UnauthorizedException("数据为空");
+            //数据为空
+            throw new UnauthorizedException(ErrorMessage.EMPTY_DATA);
         }
-        // 5.数据解析
+        //5.数据解析
         try {
-            return Long.valueOf(userPayload.toString());
+            return Integer.valueOf(userPayload.toString());
         } catch (RuntimeException e) {
-            // 数据格式有误
-            throw new UnauthorizedException("格式有误");
+            //数据格式有误
+            throw new UnauthorizedException(ErrorMessage.INVALID_TOKEN, e);
         }
     }
+
 }
