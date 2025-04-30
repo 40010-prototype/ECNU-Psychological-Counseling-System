@@ -112,13 +112,12 @@
       </view>
 
       <button 
-        class="submit-button {{isFormValid ? 'active' : ''}}" 
-        bindtap="handleSubmit"
-        loading="{{isSubmitting}}"
-        disabled="{{!isFormValid || isSubmitting}}"
-      >
-        {{isSubmitting ? '提交中...' : '完成'}}
-      </button>
+  class="submit-button {{isFormValid ? 'active' : ''}}" 
+  bindtap="handleSubmit"
+  loading="{{isSubmitting}}"
+>
+  {{isSubmitting ? '提交中...' : '完成'}}
+</button>
     </view>
   </scroll-view>
 </view> 

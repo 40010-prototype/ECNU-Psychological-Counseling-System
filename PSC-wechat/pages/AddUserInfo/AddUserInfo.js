@@ -113,13 +113,14 @@ Page({
   // 上传头像
   async uploadAvatar(tempFilePath) {
     try {
+      const token = wx.getStorageSync('token');
       const res = await new Promise((resolve, reject) => {
         wx.uploadFile({
-          url: 'http://127.0.0.1:4523/m1/6011225-5700055-default/upload/avatar',
+          url: app.globalData.BaseUrl+'/upload/avatar',
           filePath: tempFilePath,
           name: 'avatar',
-          header: {
-            'Authorization': `Bearer ${wx.getStorageSync('token')}`
+          data: {
+            token: token,
           },
           success: resolve,
           fail: reject
@@ -140,8 +141,15 @@ Page({
 
   // 提交表单
   async handleSubmit() {
-    if (!this.data.isFormValid || this.data.isSubmitting) return;
-    
+    this.validateForm();
+    if (!this.data.isFormValid) {
+        wx.showToast({
+          title: '请填写完整且正确的信息',
+          icon: 'none'
+        });
+        return;
+      }
+      if (this.data.isSubmitting) return;
     const token = wx.getStorageSync('token');
     this.setData({ isSubmitting: true });
 
@@ -155,7 +163,7 @@ Page({
 
       const res = await new Promise((resolve, reject) => {
         wx.request({
-          url: 'http://127.0.0.1:4523/m1/6011225-5700055-default',
+          url: app.globalData.BaseUrl+'/uplode/Pic',
           method: 'POST',
           data: {
             avatarUrl,
@@ -165,8 +173,8 @@ Page({
             phone: this.data.phone,
             gender: this.data.gender,
             age: parseInt(this.data.age),
-            emergencyContact: this.data.emergencyContact,
-            emergencyPhone: this.data.emergencyPhone
+            emergency_contact: this.data.emergencyContact,
+            emergency_phone: this.data.emergencyPhone
           },
           success: resolve,
           fail: reject
@@ -202,13 +210,13 @@ Page({
         throw new Error(res.data.message || '提交失败');
       }
     } catch (error) {
-      console.error('提交失败:', error);
-      wx.showToast({
-        title: error.message || '提交失败',
-        icon: 'none'
-      });
-    } finally {
-      this.setData({ isSubmitting: false });
+        console.error('提交失败:', error);
+        wx.showToast({
+          title: error.message || '提交失败',
+          icon: 'none'
+        });
+      } finally {
+        this.setData({ isSubmitting: false });
+      }
     }
-  }
 }); 

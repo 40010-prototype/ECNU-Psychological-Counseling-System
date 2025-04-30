@@ -7,26 +7,39 @@
 
   <!-- 错误提示 -->
   <view class="error-container" wx:elif="{{error}}">
+    <image src="/images/error.png" class="error-icon"></image>
     <text class="error-text">{{error}}</text>
-    <button class="retry-button" bindtap="fetchContactList">重试</button>
-  </view>
-
-  <!-- 联系人列表 -->
-  <view class="contact-list" wx:else>
-    <block wx:for="{{contactList}}" wx:key="id">
-      <view class="contact-item" bindtap="handleContactTap" data-id="{{item.id}}">
-        <image class="avatar" src="{{item.avatar}}" mode="aspectFill" />
-        <view class="contact-info">
-          <text class="name">{{item.name}}</text>
-          <text class="status" wx:if="{{item.status}}">{{item.status}}</text>
-        </view>
-        <view class="arrow"></view>
-      </view>
-    </block>
+    <button class="retry-button" bindtap="retryFetch">重新加载</button>
   </view>
 
   <!-- 空状态 -->
-  <view class="empty-container" wx:if="{{!loading && !error && contactList.length === 0}}">
-    <text class="empty-text">暂无联系人</text>
+  <view class="empty-container" wx:elif="{{!loading && counselors.length === 0}}">
+    <image src="/images/empty.png" class="empty-icon"></image>
+    <text class="empty-text">暂无咨询师</text>
+    <button class="retry-button" bindtap="retryFetch">刷新试试</button>
   </view>
+
+  <!-- 咨询师列表 -->
+  <scroll-view 
+    scroll-y 
+    class="counselor-list" 
+    wx:else
+    refresher-enabled
+    refresher-triggered="{{refreshing}}"
+    bindrefresherrefresh="onPullDownRefresh"
+  >
+    <view 
+      wx:for="{{counselors}}" 
+      wx:key="id" 
+      class="counselor-item"
+      bindtap="selectCounselor"
+      data-counselor="{{item}}"
+    >
+      <view class="counselor-info">
+        <text class="counselor-name">{{item.name}}</text>
+        <text class="counselor-phone" wx:if="{{item.phone}}">电话: {{item.phone}}</text>
+      </view>
+      <view class="select-indicator">></view>
+    </view>
+  </scroll-view>
 </view>

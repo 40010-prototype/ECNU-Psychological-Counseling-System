@@ -28,7 +28,7 @@ Page({
       });
       
       // 获取访客信息和咨询记录
-      this.fetchVisitorInfo();
+      this.fetchUserInfo();
       this.fetchConsultationHistory();
     },
 
@@ -83,14 +83,14 @@ Page({
     },
 
     // 获取访客信息
-    fetchVisitorInfo() {
+    fetchUserInfo() {
       // 从本地存储获取访客信息
-      const visitorInfo = wx.getStorageSync('visitorInfo');
-      if (visitorInfo) {
+      const UserInfo = wx.getStorageSync('userInfo');
+      if (UserInfo) {
         this.setData({
-          visitorInfo: {
-            ...this.data.visitorInfo,
-            ...visitorInfo
+          UserInfo: {
+            ...this.data.UserInfo,
+            ...UserInfo
           }
         });
       }

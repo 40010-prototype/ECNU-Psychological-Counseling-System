@@ -1,3 +1,4 @@
+const app = getApp()
 Page({
     data: {
       // 自定义图片和文字
@@ -10,7 +11,7 @@ Page({
       email: '',
       password: '',
       confirmPassword: '',
-      baseUrl: 'https://soyorinlove.me' // 后端API基础地址
+      baseUrl: app.globalData.BaseUrl, // 后端API基础地址
     },
   
     onLoad() {
@@ -140,7 +141,7 @@ Page({
   
       // 调用登录接口
       wx.request({
-        url: `${this.data.baseUrl}/admin/login`,
+        url: `${this.data.baseUrl}/login`,
         method: 'POST',
         data: {
           email: this.data.email,
@@ -154,8 +155,7 @@ Page({
               loginTime: new Date().getTime()
             };
             wx.setStorageSync('userInfo', userInfo);
-            wx.setStorageSync('token', res.data.token);
-  
+            wx.setStorageSync('token', res.data.data.token);
             // 检查是否需要完善信息
             if (res.data.needCompleteInfo) {
               wx.navigateTo({
@@ -195,7 +195,7 @@ Page({
   
       // 调用注册接口
       wx.request({
-        url: `${this.data.baseUrl}/admin/register`,
+        url: `${this.data.baseUrl}/register`,
         method: 'POST',
         data: {
           email: this.data.email,
