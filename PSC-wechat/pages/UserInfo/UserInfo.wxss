@@ -8,6 +8,7 @@
 .scroll-container {
   flex: 1;
   height: calc(100vh - 88rpx);
+  background-color: #F5F5F5;
 }
 
 .content-container {
@@ -17,20 +18,16 @@
 
 /* 信息卡片 */
 .info-card {
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 32rpx;
-  margin-bottom: 24rpx;
-  box-shadow: 0 2rpx 8rpx rgb(253, 253, 253);
+  background-color: #FFFFFF;
+  padding: 50rpx;
+  border-radius: 15rpx;
+  margin-bottom: 20rpx;
+  height: 500rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
 }
 
 /* 头像部分 */
-.avatar-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 32rpx;
-}
+
 
 .avatar {
   width: 160rpx;
@@ -48,19 +45,28 @@
 
 /* 信息部分 */
 .info-section {
-  border-top: 1rpx solid #EEEEEE;
-  padding-top: 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 22rpx;
 }
 
 .info-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16rpx;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #F5F5F5;
 }
 
 .info-item:last-child {
-  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.info-item.emergency {
+  background-color: #F8F9FA;
+  padding: 20rpx;
+  border-radius: 8rpx;
+  margin: 8rpx 0;
 }
 
 .label {
@@ -73,42 +79,58 @@
   color: #333333;
 }
 
+.info-item.emergency .label {
+  color: #333333;
+  font-weight: 500;
+}
+
+.info-item.emergency .value {
+  color: #666666;
+}
+
 /* 修改信息按钮 */
 .edit-button {
-  background: #8B7355;
-  border-radius: 16rpx;
-  padding: 24rpx 32rpx;
-  margin-bottom: 24rpx;
+  width: 100% !important;
+  height: 88rpx !important;
+  line-height: 88rpx !important;
+  background-color: #FFFFFF !important;
+  color: #333333 !important;
+  font-size: 30rpx;
+  border-radius: 10rpx;
+  margin-bottom: 20rpx;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2rpx 8rpx rgba(255, 255, 255, 0.05);
+  padding: 100 30rpx;
+  box-sizing: border-box;
+}
+
+.edit-button::after {
+  border: none;
 }
 
 .button-text {
-  font-size: 28rpx;
-  color: #ffffff;
+  font-size: 30rpx;
 }
 
 .arrow {
   color: #999999;
-  font-size: 28rpx;
+  font-size: 30rpx;
 }
 
 .logout-button {
-  background: #FFFFFF;
-  border-radius: 16rpx;
-  padding: 24rpx 32rpx;
-  margin-top: 48rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  width: 100% !important;
+  height: 88rpx !important;
+  line-height: 88rpx !important;
+  background-color: #FFFFFF !important;
+  color: #795152b7 !important;
+  font-size: 30rpx;
+  border-radius: 10rpx;
+  border: 2rpx solid #5D4037 !important;
 }
 
-.logout-button .button-text {
-  color: #caaa6f;
-  font-weight: 500;
+.logout-button::after {
+  border: none;
 }
 
 .edit-button:active {

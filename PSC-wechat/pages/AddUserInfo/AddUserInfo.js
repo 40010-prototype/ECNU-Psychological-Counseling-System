@@ -1,7 +1,7 @@
+const app = getApp();
 Page({
   data: {
     avatarUrl: '',
-    role: 'visitor', // 默认为访客
     name: '',
     phone: '',
     gender: 'male',
@@ -18,7 +18,6 @@ Page({
     if (userInfo) {
       this.setData({
         avatarUrl: userInfo.avatar || '',
-        role: userInfo.role || 'visitor',
         name: userInfo.name || '',
         phone: userInfo.phone || '',
         gender: userInfo.gender || 'male',
@@ -51,12 +50,6 @@ Page({
         });
       }
     });
-  },
-
-  // 处理身份选择
-  handleRoleChange(e) {
-    this.setData({ role: e.detail.value });
-    this.validateForm();
   },
 
   // 处理姓名输入
@@ -97,7 +90,7 @@ Page({
 
   // 验证表单
   validateForm() {
-    const { avatarUrl, role, name, phone, age, emergencyContact, emergencyPhone } = this.data;
+    const { avatarUrl, name, phone, age, emergencyContact, emergencyPhone } = this.data;
     const isNameValid = name.length >= 2;
     const isPhoneValid = /^1[3-9]\d{9}$/.test(phone);
     const isAgeValid = age > 0 && age < 120;
@@ -113,13 +106,14 @@ Page({
   // 上传头像
   async uploadAvatar(tempFilePath) {
     try {
+      const token = wx.getStorageSync('token');
       const res = await new Promise((resolve, reject) => {
         wx.uploadFile({
-          url: 'http://127.0.0.1:4523/m1/6011225-5700055-default/upload/avatar',
+          url: 'http://192.168.1.104:8080/user'+'/upload/avatar',
           filePath: tempFilePath,
           name: 'avatar',
           header: {
-            'Authorization': `Bearer ${wx.getStorageSync('token')}`
+            'token': token,
           },
           success: resolve,
           fail: reject
@@ -140,8 +134,15 @@ Page({
 
   // 提交表单
   async handleSubmit() {
-    if (!this.data.isFormValid || this.data.isSubmitting) return;
-    
+    this.validateForm();
+    if (!this.data.isFormValid) {
+        wx.showToast({
+          title: '请填写完整且正确的信息',
+          icon: 'none'
+        });
+        return;
+      }
+      if (this.data.isSubmitting) return;
     const token = wx.getStorageSync('token');
     this.setData({ isSubmitting: true });
 
@@ -152,21 +153,20 @@ Page({
       if (avatarUrl.startsWith('wxfile://')) {
         avatarUrl = await this.uploadAvatar(avatarUrl);
       }
-
       const res = await new Promise((resolve, reject) => {
         wx.request({
-          url: 'http://127.0.0.1:4523/m1/6011225-5700055-default',
+          url: `${app.globalData.BaseUrl}`+'/addInfo',
           method: 'POST',
+          header: {
+            'token': token,
+          },
           data: {
-            avatarUrl,
-            token: token,
-            role: this.data.role,
             name: this.data.name,
             phone: this.data.phone,
             gender: this.data.gender,
             age: parseInt(this.data.age),
-            emergencyContact: this.data.emergencyContact,
-            emergencyPhone: this.data.emergencyPhone
+            emergency_contact: this.data.emergencyContact,
+            emergency_phone: this.data.emergencyPhone
           },
           success: resolve,
           fail: reject
@@ -177,7 +177,6 @@ Page({
         // 保存用户信息到本地存储
         const userInfo = {
           avatarUrl,
-          role: this.data.role,
           name: this.data.name,
           phone: this.data.phone,
           gender: this.data.gender,
@@ -202,13 +201,13 @@ Page({
         throw new Error(res.data.message || '提交失败');
       }
     } catch (error) {
-      console.error('提交失败:', error);
-      wx.showToast({
-        title: error.message || '提交失败',
-        icon: 'none'
-      });
-    } finally {
-      this.setData({ isSubmitting: false });
+        console.error('提交失败:', error);
+        wx.showToast({
+          title: error.message || '提交失败',
+          icon: 'none'
+        });
+      } finally {
+        this.setData({ isSubmitting: false });
+      }
     }
-  }
 }); 

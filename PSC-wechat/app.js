@@ -1,2 +1,6 @@
 // app.js
-App({})
+App({
+    globalData: {
+    BaseUrl:'https://soyorinlove.me/api/user',
+}
+})

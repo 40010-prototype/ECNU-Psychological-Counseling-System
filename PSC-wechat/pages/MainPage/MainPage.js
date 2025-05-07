@@ -1,4 +1,5 @@
 // pages/MainPage/MainPage.js
+const app = getApp();
 Page({
 
     /**
@@ -14,7 +15,16 @@ Page({
       // 咨询记录数据
       scrollItems: [],
       // 页面高度
-      pageHeight: 0
+      pageHeight: 0,
+      hasActiveSession: false,
+      userInfo: null,
+      baseUrl: 'http://localhost:3000',
+      currentTab: 'chat',
+      isConsulting: false,
+      currentConsultant: null,
+      consultantList: [],
+      consultationHistory: [],
+      userId: ''
     },
 
     /**
@@ -28,8 +38,9 @@ Page({
       });
       
       // 获取访客信息和咨询记录
-      this.fetchVisitorInfo();
-      this.fetchConsultationHistory();
+      this.loadUserInfo();
+      this.loadConsultationHistory();
+      this.checkActiveSession();
     },
 
     /**
@@ -43,7 +54,9 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow() {
-
+      this.loadUserInfo();
+      this.loadConsultationHistory();
+      this.checkActiveSession();
     },
 
     /**
@@ -64,8 +77,9 @@ Page({
      */
     onPullDownRefresh() {
       // 下拉刷新
-      this.fetchVisitorInfo();
-      this.fetchConsultationHistory();
+      this.loadUserInfo();
+      this.loadConsultationHistory();
+      wx.stopPullDownRefresh();
     },
 
     /**
@@ -83,50 +97,64 @@ Page({
     },
 
     // 获取访客信息
-    fetchVisitorInfo() {
-      // 从本地存储获取访客信息
-      const visitorInfo = wx.getStorageSync('visitorInfo');
-      if (visitorInfo) {
-        this.setData({
-          visitorInfo: {
-            ...this.data.visitorInfo,
-            ...visitorInfo
-          }
-        });
-      }
+    loadUserInfo() {
+      const userInfo = wx.getStorageSync('userInfo') || {};
+      this.setData({
+        userInfo: userInfo,
+        userId: userInfo.id || ''
+      });
     },
 
     // 获取咨询记录
-    fetchConsultationHistory() {
-      // 模拟API调用
-      const mockData = [
-        {
-          id: 1,
-          time: '2024-03-26 14:30',
-          image: '/images/chat-icon.png',
-          description: '心理咨询记录1'
+    loadConsultationHistory() {
+        const counselor = wx.getStorageSync('selectedCounselor');
+      const token = wx.getStorageSync('token');
+      if (!token) return;
+
+      wx.request({
+        url: `${app.globalData.BaseUrl}`+'/sessions/messages?counselorId='+`${counselor.id}`,
+        method: 'GET',
+        header: {
+          'token': token
         },
-        {
-          id: 2,
-          time: '2024-03-25 15:45',
-          image: '/images/chat-icon.png',
-          description: '心理咨询记录2'
+        success: (res) => {
+          if (res.data.code === 1) {
+            this.setData({
+              scrollItems: res.data.data || []
+            });
+          }
+        },
+        fail: (err) => {
+          console.error('获取咨询历史失败：', err);
         }
-      ];
-
-      this.setData({
-        scrollItems: mockData
       });
+    },
 
-      // 完成下拉刷新
-      wx.stopPullDownRefresh();
+    // 格式化时间戳
+    formatTimestamp(timestamp) {
+      if (!timestamp) return '';
+      
+      const date = new Date(timestamp);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      
+      return `${year}-${month}-${day} ${hours}:${minutes}`;
     },
 
     // 处理在线咨询
     handleConsult() {
-      wx.navigateTo({
-        url: '/pages/Chatpage/Chatpage'
-      });
+      if (this.data.hasActiveSession) {
+        wx.switchTab({
+          url: '/pages/Chatpage/Chatpage'
+        });
+      } else {
+        wx.navigateTo({
+          url: '/pages/Chat/Chat1'
+        });
+      }
     },
 
     // 导航到聊天页面
@@ -155,5 +183,21 @@ Page({
           }
         }
       });
+    },
+
+    checkActiveSession() {
+      const counselor = wx.getStorageSync('selectedCounselor');
+      const hasActiveSession = counselor && counselor.id;
+      
+      if (hasActiveSession !== this.data.hasActiveSession) {
+        this.setData({ hasActiveSession });
+        
+        // 更新tabBar
+        wx.setTabBarItem({
+          index: 1,
+          text:  '咨询会话',
+          pagePath: hasActiveSession ? 'pages/Chatpage/Chatpage' : 'pages/Chat/Chat1'
+        });
+      }
     }
 })

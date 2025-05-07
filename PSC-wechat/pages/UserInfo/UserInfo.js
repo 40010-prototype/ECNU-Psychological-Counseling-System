@@ -21,11 +21,17 @@ Page({
   fetchUserInfo: function() {
     // 从本地存储获取用户信息
     const userInfo = wx.getStorageSync('userInfo');
+    const userInfo1 = wx.getStorageSync('userInfo1');
     if (userInfo) {
       this.setData({
         userInfo: userInfo
       });
-    }
+    };
+    if (userInfo1) {
+        this.setData({
+          userInfo1: userInfo1
+        });
+      }
   },
 
   // 处理修改信息按钮点击

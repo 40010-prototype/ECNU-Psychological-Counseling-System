@@ -1,7 +1,7 @@
 Page({
     data: {
       canAgree: false,
-      remainingTime: 10,
+      remainingTime: 3,
     },
     onShow() {
       // 在页面显示时立即隐藏 TabBar
@@ -20,7 +20,7 @@ Page({
     },
   
     startCountdown() {
-      let timeLeft = 10;
+      let timeLeft = 3;
       const timer = setInterval(() => {
         timeLeft--;
         this.setData({
@@ -41,7 +41,7 @@ Page({
   
       // 跳转到聊天页面
       wx.navigateTo({
-        url: '/pages/Chatpage/Chatpage'
+        url: '/pages/Chat2/Chat2'
       });
     },
     onBack() {

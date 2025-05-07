@@ -19,26 +19,13 @@
         <text class="avatar-tip">点击更换头像</text>
       </view>
 
-      <view class="form-section">
-        <view class="form-group">
-          <text class="label">身份选择</text>
-          <radio-group class="radio-group" bindchange="handleRoleChange">
-            <label class="radio-label">
-              <radio value="visitor" checked="{{role === 'visitor'}}" color="#8B7355"/>
-              <text>访客</text>
-            </label>
-            <label class="radio-label">
-              <radio value="consultant" checked="{{role === 'consultant'}}" color="#8B7355"/>
-              <text>咨询师</text>
-            </label>
-          </radio-group>
-        </view>
 
-        <view class="form-group">
+
+      <view class="form-group">
           <text class="label">姓名</text>
           <input 
             class="input" 
-            type="text" 
+            type="nickname" 
             placeholder="请输入您的姓名" 
             value="{{name}}"
             bindinput="handleNameInput"
@@ -91,7 +78,7 @@
           <text class="label">联系人姓名</text>
           <input 
             class="input" 
-            type="text" 
+            type="nickname" 
             placeholder="请输入紧急联系人姓名" 
             value="{{emergencyContact}}"
             bindinput="handleEmergencyContactInput"
@@ -112,13 +99,11 @@
       </view>
 
       <button 
-        class="submit-button {{isFormValid ? 'active' : ''}}" 
-        bindtap="handleSubmit"
-        loading="{{isSubmitting}}"
-        disabled="{{!isFormValid || isSubmitting}}"
-      >
-        {{isSubmitting ? '提交中...' : '完成'}}
-      </button>
-    </view>
+  class="submit-button {{isFormValid ? 'active' : ''}}" 
+  bindtap="handleSubmit"
+  loading="{{isSubmitting}}"
+>
+  {{isSubmitting ? '提交中...' : '完成'}}
+</button>
   </scroll-view>
 </view> 

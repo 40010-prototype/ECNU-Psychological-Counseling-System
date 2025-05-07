@@ -150,6 +150,6 @@
   }
   
   .countdown-text {
-    font-size: 28rpx;
+    font-size: 25rpx;
     opacity: 0.9;
   }

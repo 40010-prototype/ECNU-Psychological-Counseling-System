@@ -1,9 +1,9 @@
 {
     "pages": [
+        "pages/FirstPage/FirstPage",
         "pages/MainPage/MainPage",
         "pages/Chat/Chat1",
         "pages/Chatpage/Chatpage",
-        "pages/FirstPage/FirstPage",
         "pages/index/index",
         "pages/History/History",
         "pages/AddUserInfo/AddUserInfo",

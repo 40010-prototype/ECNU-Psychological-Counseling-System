@@ -1,87 +1,51 @@
-<!-- 顶部导航栏 -->
-<navigation-bar 
-  title="在线咨询" 
-  back="{{true}}" 
-  color="black" 
-  background="#FFF"
-  bind:back="navigateBack"
-></navigation-bar>
-
-<view class="chat-container">
-  <!-- 对方信息栏 -->
-  <view class="partner-header">
-    <view class="partner-info">
-      <image class="partner-avatar" src="{{partnerInfo.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill"></image>
-      <view class="partner-details">
-        <text class="partner-name">{{partnerInfo.name || '等待连接...'}}</text>
-        <text class="partner-title">{{partnerInfo.title || ''}}</text>
-      </view>
-    </view>
-    <view class="status-indicator {{partnerInfo.online ? 'online' : 'offline'}}">
-      {{partnerInfo.online ? '在线' : '离线'}}
-    </view>
+<view class="chat-page">
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar">
+    <view class="nav-back" bindtap="goBackMainPage">←</view>
+    <view class="nav-title">{{ counselor.name }}</view>
+    <view class="end-consult-btn" bindtap="showRatingDialog">结束咨询</view>
   </view>
 
-  <!-- 聊天区域 -->
-  <scroll-view 
-    class="message-list" 
-    scroll-y 
-    scroll-into-view="{{scrollToMessage}}"
-    enhanced="{{true}}"
-    show-scrollbar="{{false}}"
-    bounces="{{true}}"
-    bindscrolltoupper="onScrollToUpper"
-  >
-    <!-- 加载更多 -->
-    <view class="loading-more" wx:if="{{isLoading}}">
-      <text>加载中...</text>
-    </view>
-
-    <block wx:for="{{messages}}" wx:key="id">
-      <!-- 时间分割线 -->
-      <view wx:if="{{item.showTime}}" class="time-divider">
-        <text>{{item.time}}</text>
-      </view>
-
-      <!-- 对方消息 -->
-      <view wx:if="{{item.sender === 'partner'}}" class="message partner-message" id="msg-{{item.id}}">
-        <image class="avatar" src="{{partnerInfo.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill" />
-        <view class="message-content">
-          <view class="bubble">
-            <text>{{item.content}}</text>
-          </view>
-          <text class="message-time">{{item.timeStr}}</text>
-        </view>
-      </view>
-
-      <!-- 我的消息 -->
-      <view wx:else class="message my-message" id="msg-{{item.id}}">
-        <view class="message-content">
-          <view class="bubble">
-            <text>{{item.content}}</text>
-          </view>
-          <text class="message-time">{{item.timeStr}}</text>
-        </view>
-        <image class="avatar" src="{{userInfo.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill" />
+  <!-- 聊天消息区 -->
+  <scroll-view scroll-y="true" class="message-list" :scroll-into-view="toView">
+    <block wx:for="{{messages}}" wx:key="index">
+      <view class="message-item {{item.isSelf ? 'self' : 'other'}}">
+        <view class="bubble">{{item.message}}</view>
       </view>
     </block>
+    <view id="bottom"></view>
   </scroll-view>
 
-  <!-- 输入区域 -->
+  <!-- 底部输入区 -->
   <view class="input-area">
-    <view class="input-wrapper">
-      <input 
-        type="text" 
-        placeholder="请输入消息..." 
-        bindinput="onInput" 
-        value="{{inputValue}}"
-        confirm-type="send"
-        bindconfirm="sendMessage"
-        adjust-position="{{true}}"
-        cursor-spacing="20"
-      />
-      <view class="send-button {{inputValue ? 'active' : ''}}" bindtap="sendMessage">
-        <text>发送</text>
+    <view class="emoji-button" bindtap="toggleEmojiPicker">😊</view>
+    <input class="input-box" placeholder="请输入消息..." value="{{inputMessage}}" bindinput="onInputChange" />
+    <button class="send-button" bindtap="sendMessage">发送</button>
+  </view>
+
+  <!-- 表情面板 -->
+  <view class="emoji-picker" wx:if="{{showEmojiPicker}}">
+    <block wx:for="{{emojiList}}" wx:key="index">
+      <view class="emoji" bindtap="selectEmoji" data-emoji="{{item}}">{{item}}</view>
+    </block>
+  </view>
+
+  <!-- 评分弹窗 -->
+  <view class="rating-dialog" wx:if="{{showRatingDialog}}">
+    <view class="rating-content">
+      <view class="rating-title">为咨询师打分</view>
+      <view class="rating-stars">
+        <view 
+          wx:for="{{5}}" 
+          wx:key="index" 
+          class="star {{index < selectedRating ? 'active' : ''}}"
+          bindtap="selectRating"
+          data-rating="{{index + 1}}"
+        >★</view>
+      </view>
+      <view class="rating-buttons">
+        <button class="cancel-btn" bindtap="hideRatingDialog">取消</button>
+        <button class="confirm-btn {{selectedRating ? 'active' : ''}}" bindtap="submitRating" disabled="{{!selectedRating}}">确定</button>
       </view>
     </view>
   </view>
